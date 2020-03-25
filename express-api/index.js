@@ -36,9 +36,24 @@ api.use(bodyDebugMiddleware);
 // const db = new BooktonicaDb(DB_NAME);
 
 // GET /books
-api.get('/books', (_unused, res) =>
-  db.getAllBooks().then(books => res.send(books))
-);
+api.get('/books', (_unused, res) => {
+  db.getAllBooks()
+    .then(books => res.send(books))
+    .catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
+api.post('/likes/:bookId', (req, res) => {
+  console.log('/likes/:bookId req.params => ', req.params);
+  db.addLike(req.params.bookId)
+    .then(() => res.sendStatus(201))
+    .catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
 
 // sanityCheck will make sure the DB is working before listening
 db.sanityCheck().then(() => {

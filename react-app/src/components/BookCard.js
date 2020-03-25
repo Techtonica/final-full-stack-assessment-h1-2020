@@ -6,7 +6,8 @@ import {
   CardText,
   CardBody,
   CardTitle,
-  CardSubtitle
+  CardSubtitle,
+  Button
 } from "reactstrap";
 
 /**
@@ -20,7 +21,8 @@ class BookCard extends Component {
       summary,
       title,
       author_name,
-      publication_date
+      publication_date,
+      like_count
     } = this.props.book;
     return (
       <Col xs="4">
@@ -33,8 +35,12 @@ class BookCard extends Component {
           <CardBody>
             <CardTitle>{title}</CardTitle>
             <CardSubtitle>{author_name}</CardSubtitle>
+            <Button>Like</Button>
             <CardText>
-              <i>{publication_date}</i> - {summary}
+              <i>
+                Liked {like_count} times. {publication_date}
+              </i>{" "}
+              - {summary}
             </CardText>
           </CardBody>
         </Card>

@@ -29,17 +29,25 @@ class BooktonicaDatabase {
     return this.db.one('SELECT count(*) FROM books').then(r => r.count);
   }
 
+  addLike(bookId) {
+    return this.db.none('INSERT INTO likes (book_id) VALUES ($1)', bookId);
+  }
+
   getAllBooks() {
     return this.db.any(
       `SELECT 
-        b.id,
-        b.title,
-        b.subtitle,
-        b.summary,
-        b.cover_image_url,
-        to_char(b.publication_date, 'DD Mon YYYY') as publication_date, 
-        a.name AS author_name FROM books b 
-        INNER JOIN authors a on a.id = b.author_id
+          b.id,
+          b.title,
+          b.subtitle,
+          b.summary,
+          b.cover_image_url,
+          to_char(b.publication_date, 'DD Mon YYYY') as publication_date, 
+          a.name AS author_name,
+          COUNT(b.id) AS like_count
+        FROM books b 
+          INNER JOIN authors a on a.id = b.author_id
+          INNER JOIN likes l on l.book_id = b.id
+        GROUP BY b.id, a.id
         ORDER BY b.publication_date DESC`
     );
   }
