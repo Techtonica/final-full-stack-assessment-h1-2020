@@ -13,6 +13,10 @@ const DEFAULT_PORT = 3001;
 const PORT = process.env.PORT || DEFAULT_PORT;
 const DEFAULT_DB_NAME = 'booktonica';
 const dbName = process.env.DB_NAME || DEFAULT_DB_NAME;
+/**
+ * Creates a new database object.
+ * Add new database queries there.
+ */
 const db = new BooktonicaDatabase(dbName);
 
 const api = express();
@@ -29,12 +33,6 @@ api.use(bodyParser.json());
 const bodyDebugMiddleware = require('./src/body-debug-middleware');
 api.use(bodyDebugMiddleware);
 
-/**
- * Creates a new database object.
- * Add new database queries there.
- */
-// const db = new BooktonicaDb(DB_NAME);
-
 // GET /books
 api.get('/books', (_unused, res) => {
   db.getAllBooks()
@@ -45,14 +43,27 @@ api.get('/books', (_unused, res) => {
     });
 });
 
-api.post('/likes/:bookId', (req, res) => {
-  console.log('/likes/:bookId req.params => ', req.params);
+api.get('/books/likes', (req, res) => {
+  db.getLikeCounts().then(counts => res.send(counts));
+});
+
+api.post('/books/:bookId/likes', (req, res) => {
   db.addLike(req.params.bookId)
     .then(() => res.sendStatus(201))
     .catch(err => {
       console.error(err);
       res.sendStatus(500);
     });
+});
+
+api.get('/users', (req, res) => {
+  db.getAllUsers().then(users => res.send(users));
+});
+
+api.put('/users/:username', (req, res) => {
+  db.putUser(req.params.username).then(isNewRecord =>
+    isNewRecord ? res.sendStatus(201) : res.sendStatus(200)
+  );
 });
 
 // sanityCheck will make sure the DB is working before listening

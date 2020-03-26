@@ -29,14 +29,41 @@ class BooktonicaDatabase {
     return this.db.one('SELECT count(*) FROM books').then(r => r.count);
   }
 
+  getLikeCounts() {
+    return this.db.any(`
+      SELECT l.book_id, 
+        CAST(COUNT(l.book_id) AS INTEGER) AS like_count
+        FROM likes l
+        INNER JOIN books b ON b.id = l.book_id
+        GROUP BY l.book_id
+    `);
+  }
+
   addLike(bookId) {
     return this.db.none('INSERT INTO likes (book_id) VALUES ($1)', bookId);
+  }
+
+  putUser(username) {
+    return this.db
+      .oneOrNone('SELECT * FROM users WHERE username = $1', username)
+      .then(existingUser => {
+        if (existingUser) {
+          return false;
+        }
+        return this.db
+          .none('INSERT INTO users (username) VALUES ($1)', username)
+          .then(() => true);
+      });
+  }
+
+  getAllUsers() {
+    return this.db.any('SELECT * FROM USERS');
   }
 
   getAllBooks() {
     return this.db.any(
       `SELECT 
-          b.id,
+          b.id AS book_id,
           b.title,
           b.subtitle,
           b.summary,

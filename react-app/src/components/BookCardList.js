@@ -4,10 +4,16 @@ import { Row } from "reactstrap";
 
 class BookCardList extends Component {
   render() {
+    const { books, actions, likeCountsByBookId } = this.props;
     return (
       <Row>
-        {this.props.books.map(book => (
-          <BookCard key={book.id} book={book} />
+        {books.map(book => (
+          <BookCard
+            actions={actions}
+            key={book.book_id}
+            book={book}
+            likeCount={likeCountsByBookId[book.book_id]}
+          />
         ))}
       </Row>
     );
