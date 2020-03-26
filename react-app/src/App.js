@@ -11,10 +11,13 @@ import BookCardList from "./components/BookCardList";
 class App extends Component {
   constructor(props) {
     super(props);
+
+    const urlUsername = new URL(window.location).searchParams.get("username");
+
     this.state = {
       books: [],
       likeCountsByBookId: {},
-      currentUsername: "zorro",
+      currentUsername: urlUsername || "zorro",
       currentUserData: {
         likedBookIds: []
       }
@@ -41,8 +44,12 @@ class App extends Component {
           book_id
         );
         this.setState({
-          likeCountsByBookId: { [book_id]: newCount },
+          likeCountsByBookId: {
+            ...this.state.likeCountsByBookId,
+            [book_id]: newCount
+          },
           currentUserData: {
+            ...this.state.currentUserData,
             likedBookIds: updatedLikedBookIds
           }
         });
