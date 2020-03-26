@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: authors; Type: TABLE; Schema: public; Owner: bill
+-- Name: authors; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.authors (
@@ -34,10 +34,8 @@ CREATE TABLE public.authors (
 );
 
 
-ALTER TABLE public.authors OWNER TO bill;
-
 --
--- Name: authors_id_seq; Type: SEQUENCE; Schema: public; Owner: bill
+-- Name: authors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.authors_id_seq
@@ -49,17 +47,15 @@ CREATE SEQUENCE public.authors_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.authors_id_seq OWNER TO bill;
-
 --
--- Name: authors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bill
+-- Name: authors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.authors_id_seq OWNED BY public.authors.id;
 
 
 --
--- Name: books; Type: TABLE; Schema: public; Owner: bill
+-- Name: books; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.books (
@@ -73,10 +69,8 @@ CREATE TABLE public.books (
 );
 
 
-ALTER TABLE public.books OWNER TO bill;
-
 --
--- Name: books_id_seq; Type: SEQUENCE; Schema: public; Owner: bill
+-- Name: books_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.books_id_seq
@@ -88,31 +82,29 @@ CREATE SEQUENCE public.books_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.books_id_seq OWNER TO bill;
-
 --
--- Name: books_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bill
+-- Name: books_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.books_id_seq OWNED BY public.books.id;
 
 
 --
--- Name: authors id; Type: DEFAULT; Schema: public; Owner: bill
+-- Name: authors id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.authors ALTER COLUMN id SET DEFAULT nextval('public.authors_id_seq'::regclass);
 
 
 --
--- Name: books id; Type: DEFAULT; Schema: public; Owner: bill
+-- Name: books id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.books ALTER COLUMN id SET DEFAULT nextval('public.books_id_seq'::regclass);
 
 
 --
--- Data for Name: authors; Type: TABLE DATA; Schema: public; Owner: bill
+-- Data for Name: authors; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.authors (id, name, date_of_death, homepage, headshot_url, date_of_birth) FROM stdin;
@@ -126,7 +118,7 @@ COPY public.authors (id, name, date_of_death, homepage, headshot_url, date_of_bi
 
 
 --
--- Data for Name: books; Type: TABLE DATA; Schema: public; Owner: bill
+-- Data for Name: books; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.books (id, title, publication_date, author_id, cover_image_url, summary, subtitle) FROM stdin;
@@ -143,21 +135,21 @@ COPY public.books (id, title, publication_date, author_id, cover_image_url, summ
 
 
 --
--- Name: authors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bill
+-- Name: authors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.authors_id_seq', 7, true);
 
 
 --
--- Name: books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bill
+-- Name: books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.books_id_seq', 9, true);
 
 
 --
--- Name: authors authors_pkey; Type: CONSTRAINT; Schema: public; Owner: bill
+-- Name: authors authors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.authors
@@ -165,7 +157,7 @@ ALTER TABLE ONLY public.authors
 
 
 --
--- Name: books books_pkey; Type: CONSTRAINT; Schema: public; Owner: bill
+-- Name: books books_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.books
@@ -173,7 +165,7 @@ ALTER TABLE ONLY public.books
 
 
 --
--- Name: books books_author_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bill
+-- Name: books books_author_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.books

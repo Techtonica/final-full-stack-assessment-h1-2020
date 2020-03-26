@@ -1,0 +1,22 @@
+{
+  "name": "final-app-assessment",
+  "version": "1.0.0",
+  "description": "just some helpers",
+  "main": "index.js",
+  "scripts": {
+    "db:recreate": "npm run db:drop && npm run db:create",
+    "db:create": "createdb booktonica && psql booktonica < booktonica.sql",
+    "db:drop": "dropdb --if-exists booktonica",
+    "db:dump": " pg_dump --no-privileges --no-owner booktonica > booktonica.sql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Techtonica/final-full-stack-assessment-h1-2020.git"
+  },
+  "author": "immutabill",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Techtonica/final-full-stack-assessment-h1-2020/issues"
+  },
+  "homepage": "https://github.com/Techtonica/final-full-stack-assessment-h1-2020#readme"
+}
