@@ -39,8 +39,42 @@ class BooktonicaDatabase {
     `);
   }
 
-  addLike(bookId) {
-    return this.db.none('INSERT INTO likes (book_id) VALUES ($1)', bookId);
+  addLike(bookId, username) {
+    return this.db
+      .one(
+        `
+      INSERT INTO likes 
+        (book_id, liked_by_user_id) 
+          SELECT $1, u.id FROM users u WHERE u.username = $2
+        RETURNING (id)
+    `,
+        [bookId, username]
+      )
+      .then(result => true);
+  }
+
+  getUser(username) {
+    return this.db
+      .any(
+        `
+      SELECT l.book_id 
+        FROM likes l
+        INNER JOIN users u ON u.id = l.liked_by_user_id
+        WHERE u.username = $1
+    `,
+        username
+      )
+      .then(likeRows => {
+        return this.db
+          .one('SELECT * FROM users WHERE username = $1', username)
+          .then(user => {
+            const likedBookIds = likeRows.map(row => row.book_id);
+            return {
+              ...user,
+              likedBookIds
+            };
+          });
+      });
   }
 
   putUser(username) {

@@ -16,7 +16,7 @@ import {
  */
 class BookCard extends Component {
   render() {
-    const { actions, likeCount, book } = this.props;
+    const { actions, likeCount, book, isLiked } = this.props;
     const { book_id, cover_image_url, summary, title, author_name } = book;
     return (
       <Col xs="4">
@@ -30,6 +30,7 @@ class BookCard extends Component {
             <CardTitle>{title}</CardTitle>
             <CardSubtitle>{author_name}</CardSubtitle>
             <LikeButton
+              isLiked={isLiked}
               actions={actions}
               likeCount={likeCount}
               book_id={book_id}

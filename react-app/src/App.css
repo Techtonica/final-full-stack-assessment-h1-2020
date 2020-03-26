@@ -16,3 +16,7 @@
 .card-text {
   padding-top: 1em;
 }
+
+.likeCount {
+  display: block;
+}

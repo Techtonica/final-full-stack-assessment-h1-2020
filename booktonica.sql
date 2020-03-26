@@ -105,7 +105,8 @@ ALTER SEQUENCE public.books_id_seq OWNED BY public.books.id;
 CREATE TABLE public.likes (
     id integer NOT NULL,
     book_id integer NOT NULL,
-    liked_at timestamp without time zone DEFAULT now() NOT NULL
+    liked_at timestamp without time zone DEFAULT now() NOT NULL,
+    liked_by_user_id integer NOT NULL
 );
 
 
@@ -134,6 +135,41 @@ ALTER SEQUENCE public.likes_id_seq OWNED BY public.likes.id;
 
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: bill
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username text NOT NULL,
+    joined_on timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO bill;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: bill
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO bill;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bill
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
 -- Name: authors id; Type: DEFAULT; Schema: public; Owner: bill
 --
 
@@ -152,6 +188,13 @@ ALTER TABLE ONLY public.books ALTER COLUMN id SET DEFAULT nextval('public.books_
 --
 
 ALTER TABLE ONLY public.likes ALTER COLUMN id SET DEFAULT nextval('public.likes_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: bill
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -189,16 +232,25 @@ COPY public.books (id, title, publication_date, author_id, cover_image_url, summ
 -- Data for Name: likes; Type: TABLE DATA; Schema: public; Owner: bill
 --
 
-COPY public.likes (id, book_id, liked_at) FROM stdin;
-1	1	2020-03-25 11:50:06.35647
-2	1	2020-03-25 11:50:19.646788
-3	4	2020-03-25 11:50:40.851128
-4	1	2020-03-25 12:15:09.685865
-5	1	2020-03-25 12:15:12.154898
-6	1	2020-03-25 12:15:12.391098
-7	5	2020-03-25 12:20:48.643835
-8	3	2020-03-25 12:22:03.412459
-9	6	2020-03-25 12:23:22.59897
+COPY public.likes (id, book_id, liked_at, liked_by_user_id) FROM stdin;
+1	1	2020-03-25 15:48:42.409331	1
+2	2	2020-03-25 15:48:48.870892	1
+4	1	2020-03-25 15:50:04.906801	2
+5	3	2020-03-25 15:50:13.816527	2
+16	2	2020-03-25 17:27:11.065164	4
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: bill
+--
+
+COPY public.users (id, username, joined_on) FROM stdin;
+1	bill	2020-03-25 00:00:00
+2	osito	2020-03-25 15:49:57.89772
+3	oscuro	2020-03-25 15:57:23.409704
+4	zorro	2020-03-25 15:57:35.649333
+5	mani	2020-03-25 15:58:02.648735
 \.
 
 
@@ -220,7 +272,14 @@ SELECT pg_catalog.setval('public.books_id_seq', 9, true);
 -- Name: likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bill
 --
 
-SELECT pg_catalog.setval('public.likes_id_seq', 9, true);
+SELECT pg_catalog.setval('public.likes_id_seq', 18, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bill
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 5, true);
 
 
 --
@@ -248,6 +307,29 @@ ALTER TABLE ONLY public.likes
 
 
 --
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: bill
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: bill
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: unique_likes_idx; Type: INDEX; Schema: public; Owner: bill
+--
+
+CREATE UNIQUE INDEX unique_likes_idx ON public.likes USING btree (book_id, liked_by_user_id);
+
+
+--
 -- Name: books books_author_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bill
 --
 
@@ -269,6 +351,14 @@ ALTER TABLE ONLY public.books
 
 ALTER TABLE ONLY public.likes
     ADD CONSTRAINT likes_book_id_fkey FOREIGN KEY (book_id) REFERENCES public.books(id);
+
+
+--
+-- Name: likes likes_liked_by_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bill
+--
+
+ALTER TABLE ONLY public.likes
+    ADD CONSTRAINT likes_liked_by_user_id_fkey FOREIGN KEY (liked_by_user_id) REFERENCES public.users(id);
 
 
 --

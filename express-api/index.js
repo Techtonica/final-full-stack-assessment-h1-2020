@@ -48,7 +48,7 @@ api.get('/books/likes', (req, res) => {
 });
 
 api.post('/books/:bookId/likes', (req, res) => {
-  db.addLike(req.params.bookId)
+  db.addLike(req.params.bookId, req.body.username)
     .then(() => res.sendStatus(201))
     .catch(err => {
       console.error(err);
@@ -64,6 +64,11 @@ api.put('/users/:username', (req, res) => {
   db.putUser(req.params.username).then(isNewRecord =>
     isNewRecord ? res.sendStatus(201) : res.sendStatus(200)
   );
+});
+
+// includes per-user stats like liked book IDs
+api.get('/users/:username', (req, res) => {
+  db.getUser(req.params.username).then(user => res.send(user));
 });
 
 // sanityCheck will make sure the DB is working before listening

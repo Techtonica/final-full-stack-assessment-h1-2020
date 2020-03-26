@@ -4,7 +4,7 @@ import { Row } from "reactstrap";
 
 class BookCardList extends Component {
   render() {
-    const { books, actions, likeCountsByBookId } = this.props;
+    const { books, actions, likeCountsByBookId, likedBookIds } = this.props;
     return (
       <Row>
         {books.map(book => (
@@ -13,6 +13,7 @@ class BookCardList extends Component {
             key={book.book_id}
             book={book}
             likeCount={likeCountsByBookId[book.book_id]}
+            isLiked={likedBookIds.includes(book.book_id)}
           />
         ))}
       </Row>
