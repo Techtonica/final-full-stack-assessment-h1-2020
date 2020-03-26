@@ -36,8 +36,11 @@ api.use(bodyDebugMiddleware);
 // const db = new BooktonicaDb(DB_NAME);
 
 // GET /books
-api.get('/books', (_unused, res) =>
-  db.getAllBooks().then(books => res.send(books))
+api.get('/books', (_unused, res, next) =>
+  db
+    .getAllBooks()
+    .then(books => res.send(books))
+    .catch(next)
 );
 
 // sanityCheck will make sure the DB is working before listening
