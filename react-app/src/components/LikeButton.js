@@ -6,7 +6,7 @@ class LikeButton extends Component {
     const { book_id, actions, likeCount, isLiked } = this.props;
     return (
       <div>
-        <small className="likeCount">{likeCount} likes</small>
+        <small className="likeCount">{likeCount || 0} likes</small>
         <Button
           color={isLiked ? "success" : "primary"}
           disabled={isLiked}
