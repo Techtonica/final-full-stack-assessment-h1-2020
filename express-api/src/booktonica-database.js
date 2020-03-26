@@ -31,7 +31,7 @@ class BooktonicaDatabase {
 
   getAllBooks() {
     return this.db.any(
-      `SELECT 
+      `SELECT osito
         b.id,
         b.title,
         b.subtitle,

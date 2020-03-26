@@ -10,3 +10,5 @@
 - `cd ../react-app`
 - `npm install`
 - `npm start`
+
+If you prefer `yarn`, feel free to use that as well.
